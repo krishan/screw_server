@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + "/screw_server"
+
+ScrewServer.run! :host => 'localhost', :port => 3210, :environment => "production"

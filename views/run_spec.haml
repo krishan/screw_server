@@ -1,0 +1,25 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :href => "#{$screw_server_path}/screw.css", :type => "text/css"}
+
+    %script{:type => "text/javascript", :src => "/public/javascripts/jquery/jquery-1.4.2.js"}
+
+    - $library_files.each do |lib_file|
+      %script{:type => "text/javascript", :src => "#{$screw_server_path}/#{lib_file}"}
+
+    - @requires.each do |required_file|
+      %script{:type => "text/javascript", :src => "#{required_file}"}
+
+    %script{:type => "text/javascript", :src => $spec_path + "spec_helper.js"}
+
+    %script{:type => "text/javascript"}
+      = "fixture_container = #{@fixture_html.to_json}"
+  %body
+    %h3#screw_server_loading{:class => "status"}
+      Loading...
+    #fixture_container
+    - @specs.each do |spec|
+      %script{:type => "text/javascript", :src => $spec_path + spec + "_spec.js"}
+
+    %script{:type => "text/javascript"} $("#screw_server_loading").remove();
+

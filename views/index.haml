@@ -1,0 +1,12 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :href => "#{$screw_server_path}/screw.css", :type => "text/css"}
+
+  %body
+    %h1 Screw Server
+    %div{:style => "margin: 20px;"}
+      %div{:style => "margin: 20px;"}
+        %a{:href => "/run"} RUN ALL
+      -@specs.each do |spec|
+        %li
+          %a{:href => "/run/#{spec}"}= spec
