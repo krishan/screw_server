@@ -22,16 +22,6 @@ $library_files = %w{
   screw-server.js
 }
 
-def scan_for_statement(statement, filename)
-  File.read(filename).scan(/#{statement}\(["'](.+)['"]\)/).map { |groups| groups[0] }
-end
-
-def required_files_in(filename)
-  files = scan_for_statement("require", filename)
-  files = files.reject { |file| file == "spec_helper.js" }
-  files = files.map { |file| file.gsub("../../public", "/public") }
-end
-
 def required_files_for(specs)
   requires = []
   specs.each do |spec|
@@ -84,12 +74,64 @@ class SpecFile
   def required_scripts
     required_files_in($spec_base_path + "spec_helper.js") + required_files_in(filename)
   end
+
+  def last_dependency_change
+    used_files.map do |file|
+      File.mtime(file).to_i
+    end.max
+  end
+
+  def last_changed
+    @last_changed ||= File.mtime(filename).to_i
+  end
+
+  def used_files
+    [filename] +
+      used_fixtures.map {|fixture| fixture.filename } +
+      required_scripts.map {|script| $base_dir + script}
+  end
+
+  protected
+
+  def scan_for_statement(statement, filename)
+    File.read(filename).scan(/#{statement}\(["'](.+)['"]\)/).map { |groups| groups[0] }
+  end
+
+  def required_files_in(filename)
+    files = scan_for_statement("require", filename)
+    files = files.reject { |file| file == "spec_helper.js" }
+    files = files.map { |file| file.gsub("../../public", "/public") }
+  end
+end
+
+def monitor_code(spec)
+<<-EOS
+  Screw.check_for_change = function() {
+    Screw.ajax({
+      url: "/has_changes_since/#{spec.name}/#{spec.last_dependency_change}",
+      cache: false,
+      success: function(answer) {
+        if (answer === "true") {
+          location.reload();
+        }
+        else {
+          setTimeout(Screw.check_for_change, 1000);
+        }
+      }
+    });
+  };
+  Screw.check_for_change();
+EOS
 end
 
 def all_specs
   Dir.glob($spec_base_path + "*_spec.js").map do |file|
     SpecFile.new(file.gsub($spec_base_path, "").gsub("_spec.js", ""))
   end
+end
+
+def current_spec
+  all_specs.sort{ |a, b| a.last_changed <=> b.last_changed }.last
 end
 
 class ScrewServer < Sinatra::Base
@@ -120,6 +162,25 @@ class ScrewServer < Sinatra::Base
   get "/" do
     @specs = all_specs
     haml :index
+  end
+
+  get "/monitor" do
+    spec = current_spec
+    @monitor_code = monitor_code(spec)
+    run_specs([spec]);
+  end
+
+  get "/has_changes_since/:spec/:timestamp" do
+    if current_spec.name != params[:spec]
+      "true"
+    else
+      spec = SpecFile.new(params[:spec])
+      if spec.last_dependency_change > params[:timestamp].to_i
+        "true"
+      else
+        "false"
+      end
+    end
   end
 
   private

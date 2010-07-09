@@ -7,6 +7,7 @@
     %div{:style => "margin: 20px;"}
       %div{:style => "margin: 20px;"}
         %a{:href => "/run"} RUN ALL
+        %a{:href => "/monitor"} MONITOR
       -@specs.each do |spec|
         %li
-          %a{:href => "/run/#{spec}"}= spec
+          %a{:href => "/run/#{spec.name}"}= spec.name
