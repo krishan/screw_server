@@ -19,7 +19,7 @@
       Loading...
     #fixture_container
     - @specs.each do |spec|
-      %script{:type => "text/javascript", :src => $spec_path + spec + "_spec.js"}
+      %script{:type => "text/javascript", :src => spec.url}
 
     %script{:type => "text/javascript"} $("#screw_server_loading").remove();
 
