@@ -8,9 +8,9 @@
       %script{:type => "text/javascript", :src => "#{$screw_server_path}/#{lib_file}"}
 
     - @requires.each do |required_file|
-      %script{:type => "text/javascript", :src => "#{required_file}"}
+      %script{:type => "text/javascript", :src => cache_busting_url(required_file)}
 
-    %script{:type => "text/javascript", :src => $spec_path + "spec_helper.js"}
+    %script{:type => "text/javascript", :src => cache_busting_url($spec_path + "spec_helper.js")}
 
     %script{:type => "text/javascript"}
       = "fixture_container = #{@fixture_html.to_json}"
@@ -19,7 +19,7 @@
       Loading...
     #fixture_container
     - @specs.each do |spec|
-      %script{:type => "text/javascript", :src => spec.url}
+      %script{:type => "text/javascript", :src => cache_busting_url(spec.url)}
 
     %script{:type => "text/javascript"} $("#screw_server_loading").remove();
 

@@ -183,6 +183,12 @@ class ScrewServer < Sinatra::Base
     end
   end
 
+  helpers do
+    def cache_busting_url(url)
+      "#{url}?#{rand}"
+    end
+  end
+
   private
 
   def run_specs(specs)
