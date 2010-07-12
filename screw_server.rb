@@ -149,14 +149,14 @@ class ScrewServer < Sinatra::Base
 
   get "/bisect/:victim/:begin/:end" do
     victim = params[:victim]
-    suspects = all_specs - [victim]
+    suspects = all_specs.map { |spec| spec.name } - [victim]
 
     subset = suspects[params[:begin].to_i..(params[:end].to_i - 1)]
 
     puts "suspects: #{subset.length}"
 
     specs_to_run = (subset + [victim]).map {|name| SpecFile.new(name) }
-    run_specs()
+    run_specs(specs_to_run)
   end
 
   get "/" do
