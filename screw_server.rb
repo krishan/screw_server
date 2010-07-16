@@ -2,13 +2,19 @@ require "rubygems"
 require "json"
 require 'haml'
 require 'sinatra/base'
+require File.dirname(__FILE__)+'/jslint_suite'
 
-$base_dir = File.dirname(__FILE__)+"/../.."
-$screw_server_path = File.expand_path(File.dirname(__FILE__))[File.expand_path($base_dir).length..-1]
+def url_for(file)
+  File.expand_path(file)[$base_dir.length..-1]
+end
+
+$base_dir = File.expand_path(File.dirname(__FILE__)+"/../..")
+$screw_server_path = url_for(File.dirname(__FILE__))
 $spec_path = "/spec/javascripts/"
 $spec_base_path = $base_dir + $spec_path
 
 $library_files = %w{
+  fulljslint.js
   screw-unit/lib/jquery.fn.js
   screw-unit/lib/jquery.print.js
   screw-unit/lib/screw.builder.js
@@ -186,6 +192,15 @@ class ScrewServer < Sinatra::Base
   helpers do
     def cache_busting_url(url)
       "#{url}?#{rand}"
+    end
+
+    def jslint_suites
+      @jslint_suites ||= JslintSuite.suites_from($spec_base_path + "jslint.rb").map do |suite|
+        {
+          :file_list => suite.file_list.map { |file| url_for(file) },
+          :options => suite.options
+        }
+      end
     end
   end
 
