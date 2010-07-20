@@ -40,7 +40,7 @@ def fixture_hash_for(specs)
   fixture_html = {}
   specs.each do |spec|
     spec.used_fixtures.each do |fixture|
-      fixture_html[fixture.name] ||= File.read(fixture.filename).match(/<body>(.+)<\/body>/m)[1]
+      fixture_html[fixture.name] ||= File.read(fixture.filename)
     end
   end
   fixture_html
