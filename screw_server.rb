@@ -78,7 +78,9 @@ class SpecFile
   end
 
   def required_scripts
-    required_files_in($spec_base_path + "spec_helper.js") + required_files_in(filename)
+    required_files_in($spec_base_path + "spec_helper.js") +
+    [$spec_path + "spec_helper.js"] +
+      required_files_in(filename)
   end
 
   def last_dependency_change

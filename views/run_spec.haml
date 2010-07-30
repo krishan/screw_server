@@ -10,8 +10,6 @@
     - @requires.each do |required_file|
       %script{:type => "text/javascript", :src => cache_busting_url(required_file)}
 
-    %script{:type => "text/javascript", :src => cache_busting_url($spec_path + "spec_helper.js")}
-
     %script{:type => "text/javascript"}
       = "fixture_container = #{@fixture_html.to_json}"
       = "Screw.jslint_suites = #{jslint_suites.to_json}"
