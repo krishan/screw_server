@@ -63,7 +63,16 @@ $(Screw).bind('loaded', function() {
           test_dom.append($('<p class="error"></p>').text(line));
         });
       }
+    });
+
+  $(Screw)
+    .bind('after', function() {
+      var failures = $("li .it.failed");
+      if (failures.length > 0) {
+        window.scrollTo(0, failures.first().position().top);
+      }
     })
+
 });
 
 }());
