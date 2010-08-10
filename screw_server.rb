@@ -133,7 +133,7 @@ EOS
 end
 
 def all_specs
-  Dir.glob($spec_base_path + "*_spec.js").map do |file|
+  Dir.glob($spec_base_path + "*_spec.js").sort.map do |file|
     SpecFile.new(file.gsub($spec_base_path, "").gsub("_spec.js", ""))
   end
 end
