@@ -85,7 +85,7 @@ class SpecFile
 
   def last_dependency_change
     used_files.map do |file|
-      File.mtime(file).to_i
+      File.mtime(file).to_i rescue 0
     end.max
   end
 
