@@ -67,6 +67,8 @@ $(Screw).bind('loaded', function() {
 
   $(Screw)
     .bind('after', function() {
+      $("#fixture_container").empty();
+
       var failures = $("li .it.failed");
       if (failures.length > 0) {
         window.scrollTo(0, failures.first().position().top);
