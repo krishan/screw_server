@@ -55,10 +55,13 @@ $(Screw).bind('loaded', function() {
       }
     })
     .bind('failed', function(e, reason) {
+      var test_dom = $(this);
+      if (reason.message) {
+        test_dom.append($('<p class="error"></p>').text(reason.message));
+      }
       var trace = reason.stack;
       if (trace) {
         var trace_lines = trace.split("\n")
-        var test_dom = $(this);
         $.each(trace_lines, function(number, line) {
           test_dom.append($('<p class="error"></p>').text(line));
         });
