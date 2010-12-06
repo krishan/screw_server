@@ -1,0 +1,29 @@
+PATH
+  remote: .
+  specs:
+    screw_server (0.1)
+      bundler (= 1.0.7)
+      haml (= 3.0.13)
+      json (= 1.4.3)
+      rack (= 1.1.0)
+      sinatra (= 1.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    haml (3.0.13)
+    json (1.4.3)
+    rack (1.1.0)
+    sinatra (1.0)
+      rack (>= 1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (= 1.0.7)
+  haml (= 3.0.13)
+  json (= 1.4.3)
+  rack (= 1.1.0)
+  screw_server!
+  sinatra (= 1.0)

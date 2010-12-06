@@ -6,6 +6,10 @@ $code_base_dir = File.join(Dir.pwd, "public")
 raise "spec directory not found under #{$spec_base_dir}" unless File.exists?($spec_base_dir)
 raise "code directory not found under #{$code_base_dir}" unless File.exists?($code_base_dir)
 
-require File.dirname(__FILE__) + "/../lib/screw_server"
+require "rubygems"
+gem "bundler", "= 1.0.7"
+require "bundler"
+ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
+Bundler.require
 
 ScrewServer.run! :host => 'localhost', :port => 3210, :environment => "production"
