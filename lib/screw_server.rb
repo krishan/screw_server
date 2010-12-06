@@ -4,22 +4,22 @@ require 'haml'
 require 'sinatra/base'
 require File.dirname(__FILE__)+'/jslint_suite'
 
-$screw_base_dir = File.expand_path(File.dirname(__FILE__))
+$asset_base_dir = File.expand_path(File.join(File.dirname(__FILE__), "../assets"))
 
 $fixture_base_dir ||= File.join($spec_base_dir, "fixtures")
 
 $screw_assets = %w{
-  fulljslint.js
-  screw-unit/lib/jquery.fn.js
-  screw-unit/lib/jquery.print.js
-  screw-unit/lib/screw.builder.js
-  screw-unit/lib/screw.matchers.js
-  screw-unit/lib/screw.events.js
-  screw-unit/lib/screw.behaviors.js
-  smoke/lib/smoke.core.js
-  smoke/lib/smoke.mock.js
-  smoke/lib/smoke.stub.js
-  smoke/plugins/screw.mocking.js
+  vendor/fulljslint.js
+  vendor/screw-unit/lib/jquery.fn.js
+  vendor/screw-unit/lib/jquery.print.js
+  vendor/screw-unit/lib/screw.builder.js
+  vendor/screw-unit/lib/screw.matchers.js
+  vendor/screw-unit/lib/screw.events.js
+  vendor/screw-unit/lib/screw.behaviors.js
+  vendor/smoke/lib/smoke.core.js
+  vendor/smoke/lib/smoke.mock.js
+  vendor/smoke/lib/smoke.stub.js
+  vendor/smoke/plugins/screw.mocking.js
   screw-server.js
 }
 
@@ -142,7 +142,7 @@ end
 class ScrewServer < Sinatra::Base
 
   set :public, $code_base_dir
-  set :views, File.dirname(__FILE__) + '/views'
+  set :views, File.join(File.dirname(__FILE__), '../views')
 
   get "/run/:name" do
     run_specs([SpecFile.new(params[:name])])
@@ -197,7 +197,7 @@ class ScrewServer < Sinatra::Base
   end
 
   get "/screw/*" do
-    send_file(File.join($screw_base_dir, params[:splat]))
+    send_file(File.join($asset_base_dir, params[:splat]))
   end
 
   helpers do

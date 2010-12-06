@@ -3,7 +3,7 @@
     %link{:rel => "stylesheet", :href => url_for_screw_asset("screw.css"), :type => "text/css"}
 
     - @requires.each do |required_file|
-      %script{:type => "text/javascript", :src => cache_busting_url(required_file)}
+      %script{:type => "text/javascript", :src => cache_busting_url("/#{required_file}")}
 
     - $screw_assets.each do |asset|
       %script{:type => "text/javascript", :src => url_for_screw_asset(asset)}
