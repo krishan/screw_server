@@ -4,16 +4,11 @@ require 'haml'
 require 'sinatra/base'
 require File.dirname(__FILE__)+'/jslint_suite'
 
-def url_for(file)
-  File.expand_path(file)[$base_dir.length..-1]
-end
+$screw_base_dir = File.expand_path(File.dirname(__FILE__))
 
-$base_dir = File.expand_path(File.dirname(__FILE__)+"/../..")
-$screw_server_path = url_for(File.dirname(__FILE__))
-$spec_path = "/spec/javascripts/"
-$spec_base_path = $base_dir + $spec_path
+$fixture_base_dir ||= File.join($spec_base_dir, "fixtures")
 
-$library_files = %w{
+$screw_assets = %w{
   fulljslint.js
   screw-unit/lib/jquery.fn.js
   screw-unit/lib/jquery.print.js
@@ -54,23 +49,27 @@ class FixtureFile
   end
 
   def filename
-    "#{$spec_base_path}/fixtures/#{name}.html"
+    "#{$spec_base_dir}/fixtures/#{name}.html"
   end
 end
 
 class SpecFile
   attr_reader :name
 
+  def self.url_for(file)
+    File.join("/specs", file)
+  end
+
   def initialize(name)
     @name = name
   end
 
   def filename
-    $spec_base_path + name + "_spec.js"
+    File.join($spec_base_dir, name + "_spec.js")
   end
 
   def url
-    $spec_path + name + "_spec.js"
+    SpecFile.url_for(name + "_spec.js")
   end
 
   def used_fixtures
@@ -78,9 +77,7 @@ class SpecFile
   end
 
   def required_scripts
-    required_files_in($spec_base_path + "spec_helper.js") +
-    [$spec_path + "spec_helper.js"] +
-      required_files_in(filename)
+    required_files_in(File.join($spec_base_dir, "spec_helper.js")) + required_files_in(filename)
   end
 
   def last_dependency_change
@@ -96,7 +93,7 @@ class SpecFile
   def used_files
     [filename] +
       used_fixtures.map {|fixture| fixture.filename } +
-      required_scripts.map {|script| $base_dir + script}
+      required_scripts.map {|script| $code_base_dir + script}
   end
 
   protected
@@ -108,7 +105,7 @@ class SpecFile
   def required_files_in(filename)
     files = scan_for_statement("require", filename)
     files = files.reject { |file| file == "spec_helper.js" }
-    files = files.map { |file| file.gsub("../../public", "/public") }
+    files = files.map { |file| file.gsub("../../public", "") }
   end
 end
 
@@ -133,8 +130,8 @@ EOS
 end
 
 def all_specs
-  Dir.glob($spec_base_path + "*_spec.js").sort.map do |file|
-    SpecFile.new(file.gsub($spec_base_path, "").gsub("_spec.js", ""))
+  Dir.glob(File.join($spec_base_dir, "*_spec.js")).sort.map do |file|
+    SpecFile.new(file.gsub("#{$spec_base_dir}/", "").gsub("_spec.js", ""))
   end
 end
 
@@ -144,7 +141,7 @@ end
 
 class ScrewServer < Sinatra::Base
 
-  set :public, $base_dir
+  set :public, $code_base_dir
   set :views, File.dirname(__FILE__) + '/views'
 
   get "/run/:name" do
@@ -191,22 +188,49 @@ class ScrewServer < Sinatra::Base
     end
   end
 
+  get "/specs/*" do
+    send_file(File.join($spec_base_dir, params[:splat]))
+  end
+
+  get "/fixtures/*" do
+    send_file(File.join($fixture_base_dir, params[:splat]))
+  end
+
+  get "/screw/*" do
+    send_file(File.join($screw_base_dir, params[:splat]))
+  end
+
   helpers do
     def cache_busting_url(url)
       "#{url}?#{rand}"
     end
 
     def jslint_suites
-      @jslint_suites ||= JslintSuite.suites_from($spec_base_path + "jslint.rb").map do |suite|
+      @jslint_suites ||= JslintSuite.suites_from(File.join($spec_base_dir, "jslint.rb")).map do |suite|
         {
-          :file_list => suite.file_list.map { |file| url_for(file) },
+          :file_list => suite.file_list.map { |file| url_for_source_file(file) },
           :options => suite.options
         }
       end
     end
+
+    def url_for_screw_asset(asset_name)
+      "/screw/#{asset_name}"
+    end
   end
 
   private
+
+  def url_for_source_file(filename)
+    file = File.expand_path(filename)
+    if file.start_with?($code_base_dir)
+      file[$code_base_dir.length..-1]
+    elsif file.start_with?($spec_base_dir)
+      SpecFile.url_for(file[$spec_base_dir.length..-1])
+    else
+      raise "file #{file} cannot be checked by jslint since it it not inside the spec or code path"
+    end
+  end
 
   def run_specs(specs)
     @specs = specs
