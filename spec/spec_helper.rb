@@ -1,7 +1,7 @@
 require "rubygems"
 gem "bundler", "= 1.0.7"
 require "bundler"
-ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
+ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile.test", __FILE__)
 Bundler.require
 
 RSpec.configure do |config|
