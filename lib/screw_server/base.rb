@@ -6,7 +6,6 @@ module ScrewServer
     SPEC_BASE_URL = "___screw_specs___"
     ASSET_BASE_URL = "___screw_assets___"
 
-    set :public, $code_base_dir
     set :views, File.join(File.dirname(__FILE__), "..", "..", "views")
 
     get "/run/:name" do
@@ -130,12 +129,28 @@ module ScrewServer
       end
     end
 
+    def self.start_serving_specs(spec_dir, code_dir, options)
+      ScrewServer::SpecFile.base_dir = File.join(Dir.pwd, "spec/javascripts")
+      ScrewServer::Base.code_base_dir = File.join(Dir.pwd, "public")
+      ScrewServer::Base.run!(options)
+    end
+
+    def self.code_base_dir=(d)
+      raise "code directory not found under #{d}" unless File.exists?(d)
+      @code_base_dir = d
+      set(:public, d)
+    end
+
+    def self.code_base_dir
+      @code_base_dir
+    end
+
     private
 
     def url_for_source_file(filename)
       file = File.expand_path(filename)
-      if file.start_with?($code_base_dir)
-        file[$code_base_dir.length..-1]
+      if file.start_with?(self.class.code_base_dir)
+        file[self.class.code_base_dir.length..-1]
       elsif file.start_with?(SpecFile.base_dir)
         url_for_spec(file[(SpecFile.base_dir.length + 1)..-1])
       else

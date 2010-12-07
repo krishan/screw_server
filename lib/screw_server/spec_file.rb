@@ -60,7 +60,7 @@ module ScrewServer
     def used_files
       [filename] +
         used_fixtures.map {|fixture| fixture.filename } +
-        required_scripts.map {|script| $code_base_dir + script}
+        required_scripts.map {|script| Base.code_base_dir + script}
     end
 
     protected
