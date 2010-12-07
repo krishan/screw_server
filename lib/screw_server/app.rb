@@ -56,11 +56,11 @@ module ScrewServer
     end
 
     get "/#{SPEC_BASE_URL}/*" do
-      send_file(File.join(Base.spec_base_dir, params[:splat]))
+      send_file(file_from_base_dir(Base.spec_base_dir, params[:splat]))
     end
 
     get "/#{ASSET_BASE_URL}/*" do
-      send_file(File.join(asset_base_dir, params[:splat]))
+      send_file(file_from_base_dir(asset_base_dir, params[:splat]))
     end
 
     helpers do
@@ -138,6 +138,14 @@ module ScrewServer
     end
 
     private
+
+    def file_from_base_dir(base_dir, file)
+      File.expand_path(File.join(base_dir, file)).tap do |result|
+        unless result.start_with?(base_dir)
+          raise Sinatra::NotFound, "Forbidden Access out of base directory"
+        end
+      end
+    end
 
     def url_for_source_file(filename)
       file = File.expand_path(filename)
