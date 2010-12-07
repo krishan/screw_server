@@ -3,19 +3,6 @@ require "screw_server/spec_file"
 
 module ScrewServer
   describe SpecFile do
-    before do
-      ScrewServer::Base.spec_base_dir = File.join(File.dirname(__FILE__), 'fixtures', 'spec')
-      ScrewServer::Base.code_base_dir = File.join(File.dirname(__FILE__), 'fixtures', 'code')
-    end
-
-    def fixture_code_file(name)
-      "#{ScrewServer::Base.code_base_dir}/#{name}"
-    end
-
-    def fixture_spec_file(name)
-      "#{ScrewServer::Base.spec_base_dir}/#{name}"
-    end
-
     describe "delivering a list of all files the spec uses" do
       let(:example_spec) { SpecFile.new("example") }
 
