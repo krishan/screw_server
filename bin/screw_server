@@ -9,7 +9,5 @@ require "bundler"
 ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
 Bundler.require
 
-SpecFile.base_dir = File.join(Dir.pwd, "spec/javascripts")
-raise "spec directory not found under #{SpecFile.base_dir}" unless File.exists?(SpecFile.base_dir)
-
-ScrewServer.run! :host => 'localhost', :port => 3210, :environment => "production"
+ScrewServer::SpecFile.base_dir = File.join(Dir.pwd, "spec/javascripts")
+ScrewServer::Base.run! :host => 'localhost', :port => 3210, :environment => "production"
