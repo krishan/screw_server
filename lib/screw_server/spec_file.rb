@@ -1,3 +1,4 @@
+require "screw_server/base"
 require "screw_server/fixture_file"
 
 module ScrewServer
@@ -37,7 +38,7 @@ module ScrewServer
     end
 
     def required_scripts
-      required_files_in(File.join(Base.spec_base_dir, "spec_helper.js")) + required_files_in(filename)
+      required_files_in(spec_helper_file) + required_files_in(filename)
     end
 
     def last_dependency_change
@@ -51,12 +52,16 @@ module ScrewServer
     end
 
     def used_files
-      [filename] +
-        used_fixtures.map {|fixture| fixture.filename } +
-        required_scripts.map {|script| Base.code_base_dir + script}
+      [filename, spec_helper_file] +
+        used_fixtures.map(&:filename) +
+        required_scripts.map {|script| File.join(Base.code_base_dir, script)}
     end
 
     protected
+
+    def spec_helper_file
+      File.join(Base.spec_base_dir, "spec_helper.js")
+    end
 
     def scan_for_statement(statement, filename)
       File.read(filename).scan(/#{statement}\(["'](.+)['"]\)/).map { |groups| groups[0] }
