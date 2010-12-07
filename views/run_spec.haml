@@ -2,28 +2,29 @@
   %head
     %link{:rel => "stylesheet", :href => url_for_screw_asset("screw.css"), :type => "text/css"}
 
-    - @requires.each do |required_file|
+    - required_files.each do |required_file|
       %script{:type => "text/javascript", :src => cache_busting_url("/#{required_file}")}
 
-    - $screw_assets.each do |asset|
+    - screw_assets.each do |asset|
       %script{:type => "text/javascript", :src => url_for_screw_asset(asset)}
 
-    %script{:type => "text/javascript", :src => SpecFile.url_for("spec_helper.js")}
+    %script{:type => "text/javascript", :src => url_for_spec("spec_helper.js")}
 
     %script{:type => "text/javascript"}
-      = "fixture_container = #{@fixture_html.to_json}"
+      = "fixture_container = #{fixture_html.to_json}"
       = "Screw.jslint_suites = #{jslint_suites.to_json}"
   %body
     %h3#screw_server_loading{:class => "status"}
       Loading...
     #fixture_container
     - @specs.each do |spec|
-      %script{:type => "text/javascript", :src => cache_busting_url(spec.url)}
+      %script{:type => "text/javascript", :src => cache_busting_url(url_for_spec(spec.full_name))}
 
     %script{:type => "text/javascript", :src => url_for_screw_asset("screw-jslint.js")}
 
     :javascript
       $("#screw_server_loading").remove();
 
-    %script{:type => "text/javascript"}
-      = @monitor_code
+    - if @include_monitor_code
+      %script{:type => "text/javascript"}
+        = monitor_code
