@@ -2,18 +2,9 @@ require "screw_server/fixture_file"
 
 module ScrewServer
   class SpecFile
-    def self.base_dir=(d)
-      raise "spec directory not found under #{d}" unless File.exists?(d)
-      @base_dir = d
-    end
-
-    def self.base_dir
-      @base_dir
-    end
-
     def self.all
-      Dir.glob(File.join(SpecFile.base_dir, "*_spec.js")).sort.map do |file|
-        SpecFile.new(file.gsub("#{SpecFile.base_dir}/", "").gsub("_spec.js", ""))
+      Dir.glob(File.join(Base.spec_base_dir, "*_spec.js")).sort.map do |file|
+        SpecFile.new(file.gsub("#{Base.spec_base_dir}/", "").gsub("_spec.js", ""))
       end
     end
 
@@ -28,7 +19,7 @@ module ScrewServer
     end
 
     def filename
-      File.join(SpecFile.base_dir, full_name)
+      File.join(Base.spec_base_dir, full_name)
     end
 
     def full_name
@@ -46,7 +37,7 @@ module ScrewServer
     end
 
     def required_scripts
-      required_files_in(File.join(SpecFile.base_dir, "spec_helper.js")) + required_files_in(filename)
+      required_files_in(File.join(Base.spec_base_dir, "spec_helper.js")) + required_files_in(filename)
     end
 
     def last_dependency_change

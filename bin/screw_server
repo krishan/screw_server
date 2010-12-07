@@ -6,8 +6,6 @@ require "bundler"
 ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
 Bundler.require
 
-ScrewServer::Base.start_serving_specs(
-  File.join(Dir.pwd, "spec/javascripts"),
-  File.join(Dir.pwd, "public"),
-  :host => 'localhost', :port => 3210, :environment => "production"
-)
+ScrewServer::Base.spec_base_dir = File.join(Dir.pwd, "spec/javascripts")
+ScrewServer::Base.code_base_dir = File.join(Dir.pwd, "public")
+ScrewServer::App.run!(:host => 'localhost', :port => 3210, :environment => "production")
