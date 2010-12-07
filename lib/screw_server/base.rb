@@ -1,5 +1,8 @@
 require 'sinatra/base'
 
+require 'screw_server/jslint_suite'
+require "screw_server/spec_file"
+
 module ScrewServer
   class Base < Sinatra::Base
 

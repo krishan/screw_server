@@ -1,3 +1,5 @@
+require "screw_server/fixture_file"
+
 module ScrewServer
   class SpecFile
     def self.base_dir=(d)
