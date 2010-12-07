@@ -1,4 +1,8 @@
-gem "rspec", "=2.2.0"
+require "rubygems"
+gem "bundler", "= 1.0.7"
+require "bundler"
+ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
+Bundler.require
 
 RSpec.configure do |config|
   config.before(:each) do
