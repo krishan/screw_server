@@ -1,5 +1,20 @@
 (function() {
 
+if (!window.jQuery) {
+  alert(
+    "jQuery not found!\n"+
+    "jQuery must be provided by your application.\n"+
+    "Make sure the url for jquery required by your spec helper is correct.\n"+
+    "\n"+
+    "Example:\n"+
+    "If jQuery is installed under\n"
+    +"<your app>/public/javascripts/jquery.js\n"+
+    "then make sure the following line is in your spec_helper.js\n"+
+    "require('javascripts/jquery.js');"
+    );
+  return;
+}
+
 // save the ajax method in case a test messes with it
 Screw.ajax = jQuery.ajax;
 
