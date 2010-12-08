@@ -69,11 +69,16 @@ module ScrewServer
       end
 
       def jslint_suites
-        @jslint_suites ||= JslintSuite.suites_from(File.join(Base.spec_base_dir, "jslint.rb")).map do |suite|
-          {
-            :file_list => suite.file_list.map { |file| url_for_source_file(file) },
-            :options => suite.options
-          }
+        jslint_file = File.join(Base.spec_base_dir, "jslint.rb")
+        if !File.exists?(jslint_file)
+          []
+        else
+          JslintSuite.suites_from(jslint_file).map do |suite|
+            {
+              :file_list => suite.file_list.map { |file| url_for_source_file(file) },
+              :options => suite.options
+            }
+          end
         end
       end
 

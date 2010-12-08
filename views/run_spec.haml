@@ -12,7 +12,7 @@
 
     %script{:type => "text/javascript"}
       = "fixture_container = #{fixture_html.to_json}"
-      = "Screw.jslint_suites = #{jslint_suites.to_json}"
+      = "Screw.jslint_suites = #{jslint_suites.to_json};"
   %body
     %h3#screw_server_loading{:class => "status"}
       Loading...

@@ -45,5 +45,28 @@ module ScrewServer
         last_response.body.should_not include(File.read(secret_file))
       end
     end
+
+    describe "running all specs" do
+      it "should ignore a missing jslint.rb" do
+        use_spec_directory('spec_without_jslint')
+        get "/run"
+        last_response.should be_ok
+      end
+
+      it "should process a given jslint.rb and include it's data as javascript" do
+        get "/run"
+        last_response.should be_ok
+        last_response.body =~ /Screw\.jslint_suites = (.+);/
+        JSON.parse($1).should == [
+          {
+            "file_list" => ["/example.js"],
+            "options" => {"predef" => ["window"]}
+          }, {
+            "file_list" => ["/___screw_specs___/example_spec.js"],
+            "options" => nil
+          }
+        ]
+      end
+    end
   end
 end
