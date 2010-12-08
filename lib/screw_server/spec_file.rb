@@ -64,7 +64,7 @@ module ScrewServer
     protected
 
     def scan_for_statement(statement, filename)
-      File.read(filename).scan(/#{statement}\(["'](.+)['"]\)/).map { |groups| groups[0] }
+      File.read(filename).scan(/#{statement}\(["']\/?(.+)['"]\)/).map { |groups| groups[0] }
     end
 
     def required_files_in(filename)
