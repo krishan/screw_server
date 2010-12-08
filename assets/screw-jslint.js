@@ -3,11 +3,15 @@
 Screw.jslint_scripts = {};
 
 Screw.matching_suite = function(filename) {
-  return $.detect(Screw.jslint_suites, function() {
-    return $.detect(this.file_list, function() {
-      return this == filename;
+  var suite;
+  $.each(Screw.jslint_suites, function() {
+    var found;
+    $.each(this.file_list, function() {
+      if (this == filename) { found = true; }
     });
+    if (found) { suite = this; }
   });
+  return suite;
 };
 
 $("script").map(function() {
