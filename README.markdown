@@ -14,12 +14,12 @@ Screw Server expects to be executed in your application's root directory, where 
 
   * `public`
       (Contains the code to test. May use subdirectories,
-      i.e. `/javascripts` when using rails)
+      i.e. `/public/javascripts` when using rails)
   * `spec`
       * `javascripts`
           * `spec_helper.js`
           * your javascript test suites having a `"_spec.js"` - suffix (i.e. `my_spec.js`, `another_spec.js`)
-          * `fixtures`
+          * `fixtures` (optional)
             * your HTML fixture files having a `".html"` - suffix (i.e. `my_fixture.html`)
 
 Your application must contain jQuery.
@@ -31,7 +31,7 @@ If jQuery's file is `/public/javascripts/jquery-1.4.0.js` then make sure the fol
     require('javascripts/jquery-1.4.0.js');
 
 
-## Starting the Spec Server
+## Starting the Screw Server
 
     cd <my app>
     screw_server
@@ -46,14 +46,17 @@ Click on `MONITOR` in Screw Server's start page. Screw Server will then monitor 
 
 ## Wrinting Tests
 
+To get started, take a look at the example "app" located in Screw Server's source under `/example`.
+
 Screw Server uses [Screw Unit](https://github.com/infopark/screw-unit) as a test suite framework and [Smoke](https://github.com/infopark/smoke) as a mocking and stubbing framework. Please refer to their documentation for test syntax.
 
-Notice that you do not need a static HTML suite. Screw Server generates that for you.
+Notice that you do not need the static HTML suite mentiond in Screw Unit's documentation.
+Screw Server generates that for you.
 
 ## Requiring Files
 
 Screw Server provides a special mechanism for requiring files, the `require` directive.
-When writing tests, you need to tell Screw Server which javascript source from your application should be loaded.
+When writing tests, you need to tell Screw Server which javascript source files from your application should be loaded (= the code-under-test).
 
 ### Example
 
@@ -66,7 +69,7 @@ Then you need to require these files at the top of your test, i.e. in `/spec/jav
 
 If all your tests depend on `utils.js`, you should move it's `require` directive into the `spec_helper.js` to avoid repeating it in every test.
 
-Notice that `require` is not an actual javascript function! It is a directive that is parsed statically by Spec Server. Therfore the following will NOT work:
+Notice that `require` is not an actual javascript function! It is a directive that is parsed statically by Screw Server. Therfore the following will NOT work:
 
     // DO NOT DO THIS! IT DOES NOT WORK!
     var some_file = "/javascripts/utils.js";
@@ -109,3 +112,4 @@ Do not manipulate any DOM elements outside of your fixtures! This could interfer
 
 Screw Server is able to test your coding style using JSLint.
 Unfortunately there is no documentation yet.
+Feel free to ask the maintainer ^__^
