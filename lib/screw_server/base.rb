@@ -1,7 +1,7 @@
 module ScrewServer
   module Base
     def self.spec_base_dir=(d)
-      raise "spec directory not found under #{d}" unless File.exists?(d)
+      raise "you need to have directory with javascript specs under #{d}" unless File.exists?(d)
       @spec_base_dir = d
     end
 
@@ -10,7 +10,7 @@ module ScrewServer
     end
 
     def self.code_base_dir=(d)
-      raise "code directory not found under #{d}" unless File.exists?(d)
+      raise "your applications javascript code should be under #{d}" unless File.exists?(d)
       @code_base_dir = d
     end
 

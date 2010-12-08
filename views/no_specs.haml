@@ -1,0 +1,11 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :href => url_for_screw_asset("screw.css"), :type => "text/css"}
+
+  %body
+    %p The directory #{@spec_base_dir} does not contain any specs.
+    %br
+    %p Create a file #{@spec_base_dir}/foo_spec.js with the following content
+    %br
+    %pre
+      = sample_spec_file

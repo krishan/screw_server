@@ -22,8 +22,14 @@ module ScrewServer
       end
     end
 
-    it "should deliver a list of all scripts required by the spec" do
-      SpecFile.new("example").required_scripts.should include("example.js", "foo.js")
+    describe "getting a list of all required scripts" do
+      it "should deliver a list of all scripts required by the spec" do
+        SpecFile.new("example").required_scripts.should include("example.js", "foo.js")
+      end
+
+      it "should include the scripts required by the spec helper" do
+        SpecFile.new("example").required_scripts.should include("global.js")
+      end
     end
   end
 end

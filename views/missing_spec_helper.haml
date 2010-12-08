@@ -1,0 +1,12 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :href => url_for_screw_asset("screw.css"), :type => "text/css"}
+
+  %body
+    %p Cannot find #{@spec_base_dir}/spec_helper.js.
+    %br
+    %p Please create that file and use it for global test helpers.
+    %p Initially the file should at least require jQuery like this:
+    %br
+    %pre
+      = sample_spec_helper

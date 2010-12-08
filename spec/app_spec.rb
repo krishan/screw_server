@@ -46,6 +46,23 @@ module ScrewServer
       end
     end
 
+    describe "start page" do
+      it "should show a list of all specs" do
+        get "/"
+        last_response.should be_ok
+        last_response.body.should include("/run/example")
+      end
+
+      it "should contain a special notice when no specs are found" do
+        ScrewServer::Base.spec_base_dir = File.join(ScrewServer::Base.spec_base_dir, '..', 'spec_empty')
+        get "/"
+        last_response.should be_ok
+        last_response.body.should include("does not contain any specs")
+        last_response.body.should include(ScrewServer::Base.spec_base_dir)
+        last_response.body.should include("should be simple to write")
+      end
+    end
+
     describe "running all specs" do
       it "should ignore a missing jslint.rb" do
         use_spec_directory('spec_without_jslint')
@@ -66,6 +83,15 @@ module ScrewServer
             "options" => nil
           }
         ]
+      end
+
+      it "should show a warning when a spec_helper.js is missing" do
+        use_spec_directory('spec_without_spec_helper')
+        get "/run"
+        last_response.should be_ok
+        last_response.body.should include(ScrewServer::Base.spec_base_dir)
+        last_response.body.should include("Cannot find")
+        last_response.body.should include("adjust the url below")
       end
     end
   end

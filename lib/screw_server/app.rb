@@ -8,8 +8,9 @@ module ScrewServer
 
     SPEC_BASE_URL = "___screw_specs___"
     ASSET_BASE_URL = "___screw_assets___"
+    VIEW_PATH = File.join(File.dirname(__FILE__), "..", "..", "views")
 
-    set :views, File.join(File.dirname(__FILE__), "..", "..", "views")
+    set :views, VIEW_PATH
 
     get "/run/:name" do
       run_specs([SpecFile.new(params[:name])])
@@ -33,7 +34,11 @@ module ScrewServer
 
     get "/" do
       @specs = SpecFile.all
-      haml :index
+      if @specs.empty?
+        render_setup_tutorial(:no_specs)
+      else
+        haml :index
+      end
     end
 
     get "/monitor" do
@@ -135,6 +140,14 @@ module ScrewServer
           screw-server.js
         }
       end
+
+      def sample_spec_file
+        "\n"+File.read(File.join(VIEW_PATH, "sample_spec.js"))
+      end
+
+      def sample_spec_helper
+        "\n"+File.read(File.join(VIEW_PATH, "sample_spec_helper.js"))
+      end
     end
 
     def self.run!(*args)
@@ -164,12 +177,21 @@ module ScrewServer
     end
 
     def run_specs(specs)
-      @specs = specs
-      haml :run_spec
+      if File.exists?(SpecFile.spec_helper_file)
+        @specs = specs
+        haml :run_spec
+      else
+        render_setup_tutorial(:missing_spec_helper)
+      end
     end
 
     def asset_base_dir
       @assert_base_dir ||= File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "assets"))
+    end
+
+    def render_setup_tutorial(template)
+      @spec_base_dir = Base.spec_base_dir
+      haml template
     end
   end
 end
