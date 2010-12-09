@@ -19,7 +19,9 @@ Gem::Specification.new do |s|
 
   # thin and dependencies
     s.add_dependency("daemons", "= 1.0.10")
-    s.add_dependency("eventmachine", "= 0.12.10")
+    # eventmachine 0.12.[7-10] has a bug when running without native extensions
+    # http://groups.google.com/group/eventmachine/browse_thread/thread/29fef72ee865ed6d
+    s.add_dependency("eventmachine", "= 0.12.6")
   s.add_dependency("thin", "= 1.2.7")
 
   s.executables  = ['screw_server']

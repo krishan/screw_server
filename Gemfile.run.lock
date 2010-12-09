@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    screw_server (0.1)
+    screw_server (0.1.1)
       bundler (= 1.0.7)
       daemons (= 1.0.10)
-      eventmachine (= 0.12.10)
+      eventmachine (= 0.12.6)
       haml (= 3.0.13)
       json (= 1.4.3)
       rack (= 1.1.0)
@@ -15,7 +15,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     daemons (1.0.10)
-    eventmachine (0.12.10)
+    eventmachine (0.12.6)
     haml (3.0.13)
     json (1.4.3)
     rack (1.1.0)
@@ -32,7 +32,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (= 1.0.7)
   daemons (= 1.0.10)
-  eventmachine (= 0.12.10)
+  eventmachine (= 0.12.6)
   haml (= 3.0.13)
   json (= 1.4.3)
   rack (= 1.1.0)
