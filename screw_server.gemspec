@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{screw_server}
-  s.version = "0.1"
+  s.version = "0.1.1"
   s.authors = ["Kristian Hanekamp", "Infopark AG"]
   s.description = %q{Screw Server - easy javascript unit tests}
   s.email = %q{kristian.hanekamp@infopark.de}
@@ -17,13 +17,10 @@ Gem::Specification.new do |s|
     s.add_dependency("rack", "= 1.1.0")
   s.add_dependency("sinatra", "= 1.0")
 
-  # mongrel and dependencies
-    s.add_dependency("cgi_multipart_eof_fix", "=2.5.0")
-    s.add_dependency("daemons", "=1.0.10")
-    s.add_dependency("diff-lcs", "=1.1.2")
-    s.add_dependency("fastthread", "=1.0.1")
-    s.add_dependency("gem_plugin", "=0.2.3")
-  s.add_dependency("mongrel", "= 1.1.5")
+  # thin and dependencies
+    s.add_dependency("daemons", "= 1.0.10")
+    s.add_dependency("eventmachine", "= 0.12.10")
+  s.add_dependency("thin", "= 1.2.7")
 
   s.executables  = ['screw_server']
 end

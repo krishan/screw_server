@@ -3,49 +3,39 @@ PATH
   specs:
     screw_server (0.1)
       bundler (= 1.0.7)
-      cgi_multipart_eof_fix (= 2.5.0)
       daemons (= 1.0.10)
-      diff-lcs (= 1.1.2)
-      fastthread (= 1.0.1)
-      gem_plugin (= 0.2.3)
+      eventmachine (= 0.12.10)
       haml (= 3.0.13)
       json (= 1.4.3)
-      mongrel (= 1.1.5)
       rack (= 1.1.0)
       sinatra (= 1.0)
+      thin (= 1.2.7)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    cgi_multipart_eof_fix (2.5.0)
     daemons (1.0.10)
-    diff-lcs (1.1.2)
-    fastthread (1.0.1)
-    gem_plugin (0.2.3)
+    eventmachine (0.12.10)
     haml (3.0.13)
     json (1.4.3)
-    mongrel (1.1.5)
-      cgi_multipart_eof_fix (>= 2.4)
-      daemons (>= 1.0.3)
-      fastthread (>= 1.0.1)
-      gem_plugin (>= 0.2.3)
     rack (1.1.0)
     sinatra (1.0)
       rack (>= 1.0)
+    thin (1.2.7)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bundler (= 1.0.7)
-  cgi_multipart_eof_fix (= 2.5.0)
   daemons (= 1.0.10)
-  diff-lcs (= 1.1.2)
-  fastthread (= 1.0.1)
-  gem_plugin (= 0.2.3)
+  eventmachine (= 0.12.10)
   haml (= 3.0.13)
   json (= 1.4.3)
-  mongrel (= 1.1.5)
   rack (= 1.1.0)
   screw_server!
   sinatra (= 1.0)
+  thin (= 1.2.7)
