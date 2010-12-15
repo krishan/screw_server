@@ -40,6 +40,10 @@ Open `http://localhost:3210` in the browser you want your tests to run in.
 
 You may open Screw Server in several browsers in parallel to do cross-browser testing.
 
+If you require a different port or wish to use a different directory structure for your application, you can configure screw_server via command line options. To learn more, use:
+
+    screw_server --help
+
 ### Monitoring (Autotest)
 
 Click on `MONITOR` in Screw Server's start page. Screw Server will then monitor the modification times in your applications code and tests. Whenever you touch (= save) a test suite, Screw Server will automatically run that suite. When you touch a code file that is tested by that suite, the suite will automatically be re-run.

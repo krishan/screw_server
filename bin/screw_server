@@ -6,6 +6,30 @@ require "bundler"
 ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile.run", __FILE__)
 Bundler.require
 
-ScrewServer::Base.spec_base_dir = File.join(Dir.pwd, "spec/javascripts")
-ScrewServer::Base.code_base_dir = File.join(Dir.pwd, "public")
-ScrewServer::App.run!(:host => 'localhost', :port => 3210, :environment => "production")
+options = {
+  :port => 3210,
+  :spec_base_dir => "spec/javascripts",
+  :code_base_dir => "public"
+}
+
+OptionParser.new do |opt|
+  opt.on('--port -p ', Integer, 'port to start screw_server on (default is 3210)') do |port|
+    options[:port] = port
+  end
+  opt.on(
+    "--spec spec_base_dir",
+    "directory that contains the javascript specs (default is ./#{options[:spec_base_dir]})"
+  ) do |spec_base_dir|
+    options[:spec_base_dir] = spec_base_dir
+  end
+  opt.on(
+    '--code code_base_dir',
+    "directory that contains the javascript code (default is ./#{options[:code_base_dir]})"
+  ) do |code_base_dir|
+    options[:code_base_dir] = code_base_dir
+  end
+end.parse!
+
+ScrewServer::Base.spec_base_dir = File.expand_path(options[:spec_base_dir])
+ScrewServer::Base.code_base_dir = File.expand_path(options[:code_base_dir])
+ScrewServer::App.run!(:host => 'localhost', :port => options[:port], :environment => "production")
