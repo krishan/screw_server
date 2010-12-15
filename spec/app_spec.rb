@@ -77,10 +77,10 @@ module ScrewServer
         JSON.parse($1).should == [
           {
             "file_list" => ["/example.js"],
-            "options" => {"predef" => ["window"]}
+            "options" => JslintSuite::DEFAULT_OPTIONS.merge("predef" => ["window"])
           }, {
             "file_list" => ["/___screw_specs___/example_spec.js"],
-            "options" => nil
+            "options" => JslintSuite::DEFAULT_OPTIONS
           }
         ]
       end

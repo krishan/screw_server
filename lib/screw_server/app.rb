@@ -81,7 +81,7 @@ module ScrewServer
           JslintSuite.suites_from(jslint_file).map do |suite|
             {
               :file_list => suite.file_list.map { |file| url_for_source_file(file) },
-              :options => suite.options
+              :options => suite.options_with_defaults
             }
           end
         end
