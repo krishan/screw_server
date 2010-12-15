@@ -95,4 +95,22 @@ $(Screw).bind('loaded', function() {
 
 });
 
+Screw.Matchers.be = {
+  match: function(expected, actual) {
+    if (expected instanceof Array) {
+      for (var i = 0; i < actual.length; i = i + 1) {
+        if (!Screw.Matchers.be.match(expected[i], actual[i])) {
+          return false;
+        }
+      }
+      return actual.length === expected.length;
+    } else {
+      return actual === expected;
+    }
+  },
+  failure_message: function(expected, actual, not) {
+    return 'expected ' + $.print(actual) + (not ? ' not' : '') + ' to be ' + $.print(expected);
+  }
+};
+
 }());
