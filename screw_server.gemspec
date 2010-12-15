@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{screw_server}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
   s.authors = ["Kristian Hanekamp", "Infopark AG"]
   s.description = %q{Screw Server - easy javascript unit tests}
   s.email = %q{kristian.hanekamp@infopark.de}
