@@ -1,5 +1,13 @@
 #!/usr/bin/env ruby
 
+if Object.const_defined?("Bundler")
+  puts "detected bundler environment from a different app!"
+  puts "trying to shell out of bundler's environment..."
+
+  ENV["RUBYOPT"] = ENV["RUBYOPT"].gsub("-rbundler/setup", "")
+  Kernel.exec(__FILE__)
+end
+
 require "rubygems"
 gem "bundler", "= 1.0.7"
 require "bundler"
