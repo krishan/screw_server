@@ -8,9 +8,22 @@ Screw.Unit(function(){
       init_loader();
     });
 
-    it("should start loading content when user clicks", function() {
-      mock($).must_receive("ajax");
-      $(".trigger_loading").click();
+    it("should hide the area for extra content initially", function() {
+      expect($(".replace_me").css("display")).to(be, "none");
+    });
+
+    describe("when user clicks", function() {
+      it("should start loading content", function() {
+        mock($).must_receive("ajax").and_execute(function(options) {
+          expect(options.url).to(equal, "content.html");
+        });
+        $(".trigger_loading").click();
+      });
+
+      it("should show the area for the extra content", function() {
+        $(".trigger_loading").click();
+        expect($(".replace_me").css("display")).to(be, "block");
+      });
     });
 
     describe("when loading content has been started", function() {
@@ -29,10 +42,8 @@ Screw.Unit(function(){
       });
 
       it("should display an alert when loading fails", function() {
-        // notice: IE does not allow mocking alerts
-        // when testing alerts for IE use intermediate function as a workaround
-        mock(window).must_receive("alert");
         ajax_options.error();
+        expect($(".replace_me").html()).to(equal, "loading content failed!");
       });
     });
   });
