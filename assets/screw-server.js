@@ -18,6 +18,10 @@ if (!window.jQuery) {
 // save the ajax method in case a test messes with it
 Screw.ajax = jQuery.ajax;
 
+// Tests should be run without animations
+// since a test must return synchronously
+jQuery.fx.off = true;
+
 $.extend(Screw.Specifications, {
   use_fixture: function(fixture_name) {
     Screw.Specifications.before(function() {
