@@ -1,6 +1,6 @@
 [submodule "assets/vendor/smoke"]
 	path = assets/vendor/smoke
-	url = git+ssh://git@git.infopark/vendor/smoke.git
+	url = git://github.com/infopark/smoke.git
 [submodule "assets/vendor/screw-unit"]
 	path = assets/vendor/screw-unit
-	url = git+ssh://git@git.infopark/vendor/screw-unit.git
+	url = git://github.com/infopark/screw-unit.git
