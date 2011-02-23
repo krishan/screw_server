@@ -1,12 +1,14 @@
 # Screw Server
 
+## Overview
+
+Use Screw Server to organize and execute your javascript unit tests.
+
+It is based on [Screw.Unit](https://github.com/infopark/screw-unit) and [Smoke](https://github.com/infopark/smoke) and targetted primarily at testing browser-based javascript code. It aims to provide an easy-to-use testing environment for both small and large javascript projects.
+
 ## Installation
 
-(from source)
-
-    git submodule update --init
-    gem build screw_server.gemspec
-    gem install screw_server*.gem
+    gem install screw_server
 
 ## Prerequisites
 
